@@ -7,116 +7,138 @@ namespace TextCreator
 {
     class TextCreator
     {
-        public WordSignature wS;
+        public TextStructure tS;
 
         string[] sP;
 
-        public string[,,] w;
+        public string[,] n;
 
-        public TextCreator(string _s, char _sS = ' ', char _eS = '.', string[,,] _w = null)
+        public string[,] v;
+
+        public string[,] h;
+
+        public int f;
+
+        public bool[] s;
+
+        public string[] article = new string[] { "A", "The" };
+
+        public int[] o;
+
+        public TextCreator(string _tS, int _f, string[,] _n, string[,] _v, string[,] _h, int[] _o, bool[] _s = null, char _sS = ' ', char _eS = '.')
         {
-            if(_w != null)
+            if (_s == null)
             {
-                w = _w;
+                _s = new bool[_n.GetLength(0)];
             }
-            wS = new WordSignature(_s, _sS, _eS);
+
+            n = _n;
+
+            v = _v;
+
+            h = _h;
+
+            f = _f;
+
+            s = _s;
+
+            o = _o;
+
+            tS = new TextStructure(_tS, _sS, _eS);
         }
 
-        private void StructurePluss()
+        private void StructurePlus()
         {
-            var str = wS.s.Split(new char[] { ':' }).ToArray();
+            var str = tS.s.Split(new char[] { ':' }).ToArray();
             sP = str;
         }
 
         private string GenerateText()
         {
             Random r = new Random();
-            int _a = r.Next(6);
-            int b = r.Next(3);
-            bool c = r.Next(2) == 1;
 
             string text = "";
 
-            if (wS.sS != ' ') text += wS.sS;
+            if (tS.sS != ' ') text += tS.sS;
+
+            int u = 0;
+
+            int g = 0;
 
             for (int i = 0; i < sP.Length; i++)
             {
-                int j = 0;
                 if(sP[i][0] == '{')
                 {
-                    j++;
-                    if (c)
+                    if (r.Next(1) == 1)
                     {
                         break;
                     }
+
+                    sP[i] = sP[i].Remove(sP[i].Length - 1).Remove(0, 1);
                 }
-                if(sP[i][j] == 'n' && (sP[i].Length == 1 || j == 1))
+
+                if(sP[i] == "n")
                 {
-                    if (i > 0) text += $" {w[0, _a, b].ToLower()}";
-                    else text += w[0, _a, b];
+                    if (s[o[u]] && i == 0) { text += $"{article[g]} {n[o[u], f].ToLower()}"; g = 1; }
+                    else if (i > 0 && s[o[u]]) { text += $" {article[g].ToLower()} {n[o[u], f].ToLower()}"; g = 1; }
+                    else if (i > 0) text += $" {n[o[u], f].ToLower()}";
+                    else text += n[o[u], f];
+                    u++;
                 }
-                else if (sP[i][j] == 'v' && (sP[i].Length == 1 || j == 1))
+                else if (sP[i] == "v")
                 {
-                    if (i > 0) text += $" {w[1, _a, b].ToLower()}";
-                    else text += w[1, _a, b];
+                    if (i > 0) text += $" {v[0, f + 1].ToLower()}";
+                    else text += v[0, f + 1];
                 }
-                else if (sP[i][j] == 'o' && (sP[i].Length == 1 || j == 1))
+                else if (sP[i] == "a" || sP[i] == "a")
                 {
-                    if (i > 0) text += $" {w[2, _a, b].ToLower()}";
-                    else text += w[2, _a, b];
+                    if (s[o[u]] && i == 0) { text += $"{article[g]} {n[o[u], f].ToLower()}"; g = 1; }
+                    else if (i > 0 && s[o[u]]) { text += $" {article[g].ToLower()} {n[o[u], f].ToLower()}"; g = 1; }
+                    else if (i > 0) text += $" {n[o[u], f].ToLower()}";
+                    else text += n[o[u], f];
+                    u++;
                 }
-                else if (sP[i][j] == 'h' && (sP[i].Length == 1 || j == 1))
+                else if (sP[i] == "h")
                 {
-                    if (i > 0) text += $" {w[3, _a, b].ToLower()}";
-                    else text += w[3, _a, b];
+                    if (i > 0) text += $" {h[0, f].ToLower()}";
+                    else text += h[0, f];
                 }
-                else if (sP[i] == "not" || sP[i] == "{not}")
+                else if (sP[i][0] != ' ')
                 {
-                    if (j == 1) sP[i].Remove(sP[i].Length - 1).Remove(0, 1);
                     if (i > 0) text += $" {sP[i]}";
                     else text += sP[i];
-                    _a = 0;
+                    f = 0;
                 }
             }
 
-            text += wS.eS;
+            text += tS.eS;
 
             return text;
         }
 
         public void WriteText()
         {
-            StructurePluss();
+            StructurePlus();
             Console.WriteLine(GenerateText());
         }
     }
 
-    public class TextMore
+    public class TextCreatorPlus
     {
         private TextCreator tC;
 
-        WordSignatureMore wSM = new WordSignatureMore();
+        TextStructures wSM = new TextStructures();
 
-        public TextMore(string type, string[,,] _w = null)
+        public TextCreatorPlus(string type,int _f, string[,] _n, string[,] _v, string[,] _h, int[] _o, bool[] _s = null)
         {
-            tC = new TextCreator("");
-            if (_w != null)
-            {
-                tC.w = _w;
-            }
+            tC = new TextCreator("", _f, _n, _v, _h, _o, _s);
+
             switch (type)
             {
-                case "+":
-                    tC.wS = wSM.y;
-                    break;
-                case "-":
-                    tC.wS = wSM.n;
-                    break;
-                case "?":
-                    tC.wS = wSM.q;
-                    break;
-                default:
-                    break;
+                case "+": tC.tS = wSM.y; break;
+                case "-": tC.tS = wSM.n; break;
+                case "?": tC.tS = wSM.q; break;
+                default: break;
             }
         }
 
@@ -126,7 +148,7 @@ namespace TextCreator
         }
     }
 
-    class WordSignature
+    class TextStructure
     {
         public string s;
 
@@ -134,7 +156,7 @@ namespace TextCreator
 
         public char eS;
 
-        public WordSignature(string _s, char _sS, char _eS)
+        public TextStructure(string _s, char _sS, char _eS)
         {
             s = _s;
             sS = _sS;
@@ -142,35 +164,26 @@ namespace TextCreator
         }
     }
 
-    class WordSignatureMore
+    class TextStructures
     {
-        public WordSignature y = new WordSignature("n:v:{o}", ' ', '.');
+        public TextStructure y;
 
-        public WordSignature n = new WordSignature("n:h:not:v:{o}", ' ', '.');
+        public TextStructure n;
 
-        public WordSignature q = new WordSignature("h:n:v:{o}", ' ', '?');
+        public TextStructure q;
 
-        public WordSignatureMore()
+        public TextStructures(TextStructure _y, TextStructure _n, TextStructure _q)
         {
-        }
-    }
-
-    class Var<T>
-    {
-        private static T variable;
-
-        public T Get
-        {
-            get => variable;
+            y = _y;
+            n = _n;
+            q = _q;
         }
 
-        public T Set
+        public TextStructures()
         {
-            set => variable = value;
-        }
-
-        public Var()
-        {
+            y = new TextStructure("n:v:{a}", ' ', '.');
+            n = new TextStructure("n:h:not:v:{a}", ' ', '.');
+            q = new TextStructure("h:n:v:{a}", ' ', '?');
         }
     }
 }

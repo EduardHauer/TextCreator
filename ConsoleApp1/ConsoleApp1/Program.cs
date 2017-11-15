@@ -10,43 +10,33 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            string[,,] w = new string[,,]
-        {
+            string[,] n = new string[,]
             {
-                { "I"   ,   "I"   ,   "I"      },
-                { "You" ,   "You" ,   "You"    },
-                { "He"  ,   "She" ,   "It"     },
-                { "We"  ,   "We"  ,   "We"     },
-                { "You" ,   "You" ,   "You"    },
-                { "They",   "They",   "They"   }
-            },
+                { "I", "You", "He", "She", "It", "We", "You", "They" },
+                { "Game", "Game", "Game", "Game", "Game", "Game", "Game", "Game" }
+            };
+
+            string[,] v = new string[,]
             {
-                { "Play",   "Play",   "Play"   },
-                { "Play",   "Play",   "Play"   },
-                { "Plays",  "Plays",  "Plays"  },
-                { "Play",   "Play",   "Play"   },
-                { "Play",   "Play",   "Play"   },
-                { "Play",   "Play",   "Play"   }
-            },
+                { "Play", "Play", "Play", "Plays", "Plays", "Plays", "Play", "Play", "Play" },
+                { "Be", "Am", "Are", "Is", "Is", "Is", "Are", "Are", "Are" }
+            };
+
+            string[,] h = new string[,]
             {
-                { "A game", "A game", "A game" },
-                { "A game", "A game", "A game" },
-                { "A game", "A game", "A game" },
-                { "A game", "A game", "A game" },
-                { "A game", "A game", "A game" },
-                { "A game", "A game", "A game" }
-            },
+                { "Do", "Do", "Does", "Does", "Does", "Do", "Do", "Do" }
+            };
+
+            bool[] s = new bool[]
             {
-                { "Do",     "Do",     "Do"     },
-                { "Do",     "Do",     "Do"     },
-                { "Does",   "Does",   "Does"   },
-                { "Do",     "Do",     "Do"     },
-                { "Do",     "Do",     "Do"     },
-                { "Do",     "Do",     "Do"     }
-            }
-        };
+                false,
+                true
+            };
+
             Random r = new Random();
+
             string type;
+
             switch (r.Next(3))
             {
                 case 0:
@@ -60,9 +50,11 @@ namespace ConsoleApp1
                     break;
 
             }
-            TextMore tM = new TextMore(type, w);
+
+            TextCreatorPlus tM = new TextCreatorPlus(type, 3, n, v, h, new int[] { 0, 1 }, s);
 
             tM.WriteText();
+
             Console.ReadLine();
         }
     }
